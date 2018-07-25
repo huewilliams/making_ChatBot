@@ -1,6 +1,11 @@
 # making_ChatBot
 by Telegram and Facebook Messenger, language : python
   
+## 참고  
+* 사이트
+  + Python으로 챗봇 만들어보기 : http://static.wooridle.net/lectures/chatbot/
+  + [챗봇 만들기] 30분 만에 텔레그램 봇 만들기 : https://steemit.com/kr-dev/@maanya/30 
+   
 ## 챗봇 무료 호스팅 서버  
 BotHub.Studio : https://bothub.studio/?utm_source=wooridle.net&utm_medium=display&utm_campaign=chatbot-lecture-ysctm201706  
 로컬 컴퓨터에서 쉘 창을 열어 CLI 도구를 설치
