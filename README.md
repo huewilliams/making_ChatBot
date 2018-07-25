@@ -5,6 +5,7 @@ by Telegram and Facebook Messenger, language : python
 * 사이트
   + Python으로 챗봇 만들어보기 : http://static.wooridle.net/lectures/chatbot/
   + [챗봇 만들기] 30분 만에 텔레그램 봇 만들기 : https://steemit.com/kr-dev/@maanya/30 
+  + [챗봇 만들기 — 영화 상영관 찾기] : https://medium.com/bothub-studio-ko/%EC%B1%97%EB%B4%87-%EB%A7%8C%EB%93%A4%EA%B8%B0-%EC%98%81%ED%99%94-%EC%83%81%EC%98%81%EA%B4%80-%EC%B0%BE%EA%B8%B0-ec9bbff353d8
    
 ## 챗봇 무료 호스팅 서버  
 BotHub.Studio : https://bothub.studio/?utm_source=wooridle.net&utm_medium=display&utm_campaign=chatbot-lecture-ysctm201706  
