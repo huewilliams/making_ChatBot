@@ -23,7 +23,9 @@ class Bot(BaseBot):
 
         # location 이 존재할 경우 send_nearest_theaters 함수 실행
         if location:
-            self.send_nearest_theaters(location['latitude'], location['longitude'])
+            self.send_message('위치 정보 입력받았습니다.')
+            # 2018-7-27 오류 해결 : 매개변수에 event 를 전달해야 함
+            self.send_nearest_theaters(location['latitude'], location['longitude'], event)
             return
 
         # 사용자가 '영화순위' 입력시, send_box_office 함수 실행
@@ -65,14 +67,14 @@ class Bot(BaseBot):
         theaters = c.get_theater_list()
         nearest_theaters = c.filter_nearest_theater(theaters, latitude, longitude)
 
-        message = Message(event).set_text('가장 가까운 상영관들입니다')\
-                                .add_quick_reply('상영시간표를 확인하세요')
+        message = Message(event).set_text('가장 가까운 상영관들입니다' + \
+                                          '상영시간표를 확인하세요')
 
         for theater in nearest_theaters:
             # 각각의 영화관의 상영영화 정보를 받아 data 에 저장
             data = '/schedule {} {}'.format(theater['TheaterID'], theater['TheaterName'])
             # 버튼을 추가 (3개의 영화관 정보를 선택 가능)
-            message.add_postback_button(theater['TheaterName'],data)
+            message.add_postback_button(theater['TheaterName'], data)
 
         message.add_quick_reply('영화순위')
         self.send_message(message)
