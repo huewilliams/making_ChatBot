@@ -36,6 +36,13 @@ class Bot(BaseBot):
         elif message == '근처 상영관 찾기':
             self.send_search_theater_message(event)
 
+        # /schedule 로 시작하는 메세지 data 가 있을 경우 ,
+        # data{/schedule TheaterID TheaterName} 에서
+        elif message.startswith('/schedule'):
+            # maxsplit 은 분리할 단어의 갯수를 의미한다.
+            _, theater_id, theater_name = message.split(maxsplit=2)
+            self.send_theater_schedule(theater_id, theater_name, event)
+
     # 영화 순위를 메세지로 보내주는 함수
     def send_box_office(self, event):
         data = self.get_project_data()
@@ -77,4 +84,22 @@ class Bot(BaseBot):
             message.add_postback_button(theater['TheaterName'], data)
 
         message.add_quick_reply('영화순위')
+        self.send_message(message)
+
+    # 영화의 스케줄을 출력해주는 함수
+    def send_theater_schedule(self, theater_id, theater_name, event):
+        c = LotteCinema()
+        # 극장의 ID를 받아 영화 스케줄 정보를 받아와 저장함
+        movie_id_to_info = c.get_movie_list(theater_id)
+
+        text = '{}의 상영시간표입니다. \n\n'.format(theater_name)
+
+        # 영화 상영 시간을 저장하는 리스트
+        movie_schedules = []
+        for info in movie_id_to_info.values():
+            movie_schedules.append('* {}\n {}'.format(info['Name'], ' '.join([schedule['StartTime'] for schedule in info['Schedules']])))
+
+        message = Message(event).set_text(text + '\n'.join(movie_schedules))\
+                                .add_quick_reply('영화순위')\
+                                .add_quick_reply('근처 상영관 찾기')
         self.send_message(message)
