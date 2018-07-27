@@ -48,6 +48,10 @@ class Bot(BaseBot):
         elif message == '/start':
             self.send_welcome_message(event)
 
+        # 오류(등록한 입력 이외의 입력 시)가 입력 되었을 때
+        # send_error_message 함수 실행
+        else:
+            self.send_error_message(event)
 
     # 영화 순위를 메세지로 보내주는 함수
     def send_box_office(self, event):
@@ -55,7 +59,7 @@ class Bot(BaseBot):
         api_key = data.get('box_office_api_key')
         box_office = BoxOffice(api_key)
         movies = box_office.simplify(box_office.get_movies())
-        rank_message = ','.join(['{}. {}'.format(m['rank'], m['name']) for m in movies])
+        rank_message = '\n,'.join(['{}. {}'.format(m['rank'], m['name']) for m in movies])
         response = '요즘 볼만한 영화들의 순위입니다.\n{}'.format(rank_message)
 
         # send_message 의 인자로는 평범한 문자열이 올 수도 있지만,
@@ -113,10 +117,24 @@ class Bot(BaseBot):
     # 봇이 시작하였을 때 기능을 안내하는 메세지를 출력하는 함수
     def send_welcome_message(self, event):
         message = Message(event).set_text('반갑습니다.\n\n'\
+                                          '제작 : huewilliams - 강의를 보고 연습해본 챗봇입니다.\n'
                                           '저는 요즘 유행하는 영화순위를 보여드리고'\
                                           '현재 위치한 곳에서 가까운 영화관을 찾아 '\
                                           '해당 영화관의 상영시간표를 알려드립니다.\n'\
                                           "'영화순위' 나 '근처 영화관 찾기'를 입력해주십시오")\
+                                .add_quick_reply('영화순위')\
+                                .add_quick_reply('근처 상영관 찾기')
+        self.send_message(message)
+
+    # 설정된 입력값 이외의 입력시 오류 메세지 출력 및 명령매뉴얼 안내
+    def send_error_message(self, event):
+        message = Message(event).set_text('제가 알아들을 수 없는 말입니다.\n'\
+                                          '매뉴얼을 보여드리겠습니다.\n'\
+                                          '매뉴얼에 있는 명령을 해 주십시오.\n'\
+                                          '<Manual>\n'\
+                                          '영화순위 : 현재 상영중인 영화순위를 보여줌\n'
+                                          '근처 상영관 찾기 : 현재 위치에서 가까운 영화관과\n'
+                                          '해당 영화관에서 상영관에서 상영중인 영화를 보여줌')\
                                 .add_quick_reply('영화순위')\
                                 .add_quick_reply('근처 상영관 찾기')
         self.send_message(message)
