@@ -1,11 +1,5 @@
 # making_ChatBot
 by Telegram and Facebook Messenger, language : python
-  
-## 참고  
-* 사이트
-  + Python으로 챗봇 만들어보기 : http://static.wooridle.net/lectures/chatbot/
-  + [챗봇 만들기] 30분 만에 텔레그램 봇 만들기 : https://steemit.com/kr-dev/@maanya/30 
-  + [챗봇 만들기 — 영화 상영관 찾기] : https://medium.com/bothub-studio-ko/%EC%B1%97%EB%B4%87-%EB%A7%8C%EB%93%A4%EA%B8%B0-%EC%98%81%ED%99%94-%EC%83%81%EC%98%81%EA%B4%80-%EC%B0%BE%EA%B8%B0-ec9bbff353d8
    
 ## 챗봇 무료 호스팅 서버  
 BotHub.Studio : https://bothub.studio/?utm_source=wooridle.net&utm_medium=display&utm_campaign=chatbot-lecture-ysctm201706  
@@ -34,3 +28,8 @@ Bot을 서버에 구동합니다.
   
 movieFriendBot 텔레그램에서 확인하기  
 @pracMovieList_bot 에서 내가 연습으로 만든 봇을 테스트할 수 있다.
+  
+## Webhook 동작 원리  
+메시징 플랫폼(Telegram, Facebook Messenger)과 챗봇이 연동되는 방식은 아래와 같습니다.   
+출처 : http://static.wooridle.net/lectures/chatbot/  
+![messenger-webhook-diagram](https://user-images.githubusercontent.com/37013834/43296472-8160c402-9186-11e8-81f7-2affad3d41d3.png)
