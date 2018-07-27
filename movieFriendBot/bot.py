@@ -37,11 +37,17 @@ class Bot(BaseBot):
             self.send_search_theater_message(event)
 
         # /schedule 로 시작하는 메세지 data 가 있을 경우 ,
-        # data{/schedule TheaterID TheaterName} 에서
+        # data{/schedule TheaterID TheaterName} 에서 단어별로 분리함
         elif message.startswith('/schedule'):
             # maxsplit 은 분리할 단어의 갯수를 의미한다.
             _, theater_id, theater_name = message.split(maxsplit=2)
             self.send_theater_schedule(theater_id, theater_name, event)
+
+        # /start 메세지가 입력되었을 때 (봇이 시작되었을 경우)
+        # send_welcome_message 함수 실행
+        elif message == '/start':
+            self.send_welcome_message(event)
+
 
     # 영화 순위를 메세지로 보내주는 함수
     def send_box_office(self, event):
@@ -100,6 +106,17 @@ class Bot(BaseBot):
             movie_schedules.append('* {}\n {}'.format(info['Name'], ' '.join([schedule['StartTime'] for schedule in info['Schedules']])))
 
         message = Message(event).set_text(text + '\n'.join(movie_schedules))\
+                                .add_quick_reply('영화순위')\
+                                .add_quick_reply('근처 상영관 찾기')
+        self.send_message(message)
+
+    # 봇이 시작하였을 때 기능을 안내하는 메세지를 출력하는 함수
+    def send_welcome_message(self, event):
+        message = Message(event).set_text('반갑습니다.\n\n'\
+                                          '저는 요즘 유행하는 영화순위를 보여드리고'\
+                                          '현재 위치한 곳에서 가까운 영화관을 찾아 '\
+                                          '해당 영화관의 상영시간표를 알려드립니다.\n'\
+                                          "'영화순위' 나 '근처 영화관 찾기'를 입력해주십시오")\
                                 .add_quick_reply('영화순위')\
                                 .add_quick_reply('근처 상영관 찾기')
         self.send_message(message)
