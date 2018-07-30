@@ -10,6 +10,11 @@ class Bot(BaseBot):
     def handle_message(self, event, context):
         content = event.get('content')
 
+        if not content:
+            if event['new_joined']:
+                self.send_chatroom_welcome_message(event)
+            return
+
         if content.startswith('/start'):
             self.send_welcome_message(event)
 
@@ -63,8 +68,8 @@ class Bot(BaseBot):
     # 주문할 지 여부를 물어보는 함수
     def send_order_confirm(self, name, event):
         message = Message(event).set_text('{}를 주문하시겠습니까?'.format(name))\
-                                .add_quick_reply('예','/order {}'.format(name))\
-                                .add_quick_reply('취소','메뉴보기')
+                                .add_quick_reply('예', '/order {}'.format(name))\
+                                .add_quick_reply('취소', '메뉴보기')
         self.send_message(message)
 
     #
@@ -73,5 +78,18 @@ class Bot(BaseBot):
 
         chat_id = self.get_project_data().get('chat_id')
         order_message = Message(event).set_text('{} {}잔 주문이 들어왔습니다.'.format(name, quantity))\
-                                     .add_quick_reply('완료','/done {} {}'.format(event['sender']['id'], name))
+                                      .add_quick_reply('완료', '/done {} {}'.format(event['sender']['id'], name))
         self.send_message(order_message, chat_id=chat_id)
+
+    def send_chatroom_welcome_message(self, event):
+        self.remember_chatroom(event)
+        message = Message(event).set_text('안녕하세요? GiveMeJuice 봇 입니다.\n'\
+                                          '고객의 주문과 평가를 전해드립니다.')
+        self.send_message(message)
+
+    def remember_chatroom(self, event):
+        chat_id = event.get('chat_id')
+        data = self.get_project_data()
+        data['chat_id'] = chat_id
+        self.set_project_data(data)
+
